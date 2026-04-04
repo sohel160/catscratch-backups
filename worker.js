@@ -3,9 +3,34 @@ export default {
 
     const url = new URL(request.url)
 
-    // token protection
+    // token check
     if (url.searchParams.get("token") !== "abc123") {
       return new Response("Forbidden", { status: 403 })
+    }
+
+    // allow only Clash clients
+    const ua = request.headers.get("User-Agent") || ""
+
+    const allowedUA = [
+      "Clash",
+      "clash",
+      "ClashMeta",
+      "ClashforWindows",
+      "ClashX",
+      "Stash"
+    ]
+
+    let allowed = false
+
+    for (const a of allowedUA) {
+      if (ua.includes(a)) {
+        allowed = true
+        break
+      }
+    }
+
+    if (!allowed) {
+      return new Response("404 Not Found", { status: 404 })
     }
 
     const config = `
