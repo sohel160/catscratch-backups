@@ -1,28 +1,40 @@
 export default {
- async fetch(request) {
+  async fetch(request) {
 
-  const url = new URL(request.url)
-  const token = url.searchParams.get("token")
+    const url = new URL(request.url)
 
-  // token protection
-  if (token !== "abc123")
-   return new Response("Forbidden",{status:403})
+    if (url.searchParams.get("token") !== "abc123") {
+      return new Response("Forbidden", { status: 403 })
+    }
 
-  // allow only Clash clients
-  const ua = request.headers.get("User-Agent") || ""
-  const allowed = ["Clash","clash","ClashMeta","ClashforWindows","ClashX","FiClash","Stash","Shadowrocket"]
+    const ua = request.headers.get("User-Agent") || ""
 
-  let ok = false
-  for (const c of allowed){
-   if (ua.includes(c)) ok = true
-  }
+    const allowedUA = [
+      "Clash",
+      "clash",
+      "ClashMeta",
+      "ClashforWindows",
+      "ClashX",
+      "Stash",
+      "FiClash"
+    ]
 
-  if (!ok)
-   return new Response("404",{status:404})
+    let allowed = false
 
-  // full config
-  const cfg = `
+    for (const a of allowedUA) {
+      if (ua.includes(a)) {
+        allowed = true
+        break
+      }
+    }
+
+    if (!allowed) {
+      return new Response("404 Not Found", { status: 404 })
+    }
+
+    const proxies = `
 proxies:
+
 - name: proxy1
   type: socks5
   server: 45.115.113.114
@@ -32,23 +44,14 @@ proxies:
   type: http
   server: 144.48.108.122
   port: 5452
-  
-proxy-groups:
-- name: SELECT
-  type: select
-  proxies:
-  - proxy1
-  - proxy2
 
-rules:
-- MATCH,SELECT
 `
 
-  return new Response(cfg.trim(),{
-   headers:{
-    "content-type":"text/plain;charset=utf-8"
-   }
-  })
+    return new Response(proxies, {
+      headers: {
+        "Content-Type": "text/plain"
+      }
+    })
 
- }
+  }
 }
