@@ -36,7 +36,7 @@ export default {
 proxies:
 
 - name: proxy1
-  type: socks5
+  type: http
   server: 144.48.108.121
   port: 5452
 
