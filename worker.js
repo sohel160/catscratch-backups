@@ -42,8 +42,8 @@ proxies:
 
 - name: proxy2
   type: http
-  server: 180.149.235.33
-  port: 2610
+  server: 180.149.234.96
+  port: 9882
 
 `
 
