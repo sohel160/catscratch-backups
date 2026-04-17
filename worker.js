@@ -52,6 +52,15 @@ proxies:
   type: http
   server: 103.69.150.138
   port: 9859
+- name: proxy5
+  type: http
+  server: 27.147.222.175
+  port: 27271
+- name: proxy6
+  type: http
+  server: 103.198.132.93
+  port: 2610
+  
 
 `
 
