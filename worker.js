@@ -72,8 +72,8 @@ proxies:
     
   - name: proxy8
     type: http
-    server: 103.69.151.244
-    port: 2610
+    server: 103.172.14.5
+    port: 5452
     
   - name: proxy9
     type: http
